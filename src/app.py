@@ -10,20 +10,6 @@ from sqlalchemy import Column, String, Integer, Date
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import PasswordType
 
-#######################################################
-
-# todo: 
-# switch to postgres x
-# dockerize postgres x
-# dockerize application (https://medium.com/@smirnov.am/running-flask-in-production-with-docker-1932c88f14d0) x
-# write javascript to index.html page where scroll bottom triggers function to load more pictures X
-# signup page
-# signing up triggers function that creates IAM user that has access to bucket, writes access key and secret access key to db (keys are used to create presigned urls for images)
-# docker volume for postgress x
-# no plain text passwords to db X
-
-#######################################################
-
 app = Flask(__name__)
 CORS(app)
 app.secret_key = os.urandom(12)
