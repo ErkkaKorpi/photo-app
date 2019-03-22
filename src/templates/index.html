@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block content %}
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Photo App</a>
+            </li>
+        </ul>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Logged in as: {{session.username}}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+    <script>
+        let token = "";
+        let urls = "";
+        function onPageLoad() {
+            fetch("http://127.0.0.1:80/urls", {method: 'POST'})
+                .then(response => response.json())
+                .then(json => {
+                    urls = json.urls;
+                    token = json.token;
+                    urls.forEach(function(url) {
+                        let div = document.getElementById("Pictures");
+                        let img = document.createElement("img");
+                        img.setAttribute("src", url);
+                        div.appendChild(img);
+                    }); 
+                }) 
+        }
+        $(window).scroll(function() {
+            if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                if(token) {
+                    fetch("http://127.0.0.1:80/urls", {method: 'POST', body: JSON.stringify({token: token}), headers: {'Content-Type': 'application/json'}})
+                        .then(response => response.json())
+                        .then(json => {
+                            urls = json.urls;
+                            token = json.token;
+                            urls.forEach(function(url) {
+                                let div = document.getElementById("Pictures");
+                                let img = document.createElement("img");
+                                img.setAttribute("src", url);
+                                div.appendChild(img);
+                            }); 
+                    }); 
+                }
+            }
+        });
+        window.onload = onPageLoad;
+    </script>
+</nav>
+<div id="Pictures">
+
+</div>
+    {% endblock %}

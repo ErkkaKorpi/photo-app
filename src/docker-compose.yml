@@ -1,0 +1,23 @@
+version: "3"
+services:
+
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=usr
+      - POSTGRES_DB=photos_website
+    ports: 
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    
+  photos-website:
+    image: photos-website:latest
+    ports: 
+      - 80:80
+    depends_on:
+      - "postgres"
+
+volumes:
+  postgres_data:

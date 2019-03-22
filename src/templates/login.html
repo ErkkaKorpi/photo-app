@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="jumbotron vertical-center">
+        <div class="container">
+          <h1 class="display-4">Photos App</h1>
+          <p class="lead">Login to see photos</p>
+          <form action="/login" method="POST">
+                <div class="form-group">
+                  <label>Username</label>
+                  <input type="username" name="username" class="form-control" placeholder="Username">
+                </div>
+                <div class="form-group">
+                  <label>Password</label>
+                  <input type="password" name="password" class="form-control" placeholder="Password">
+                </div>
+                <div class="form-group form-check">
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          <div class="alert alert-danger" role="alert">
+              {% for message in messages %}
+              <p>{{ message }}</p>
+              {% endfor %}
+          </div>
+          {% endif %}
+          {% endwith %}
+        </div>
+</div>
+
+{% endblock %}
