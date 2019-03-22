@@ -8,3 +8,4 @@ prerequisites: Docker and docker-compose installed to host, AWS account, S3 buck
 - Upload photos to bucket
 - Run "start_app.sh" script and give it 5 parameters in the following order: bucketname, AWS access key, AWS secred access    key, database username, database user password
 - script will build necessary Docker containers and start the application and database
+- application will be reachable from http://localhost
