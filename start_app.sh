@@ -2,14 +2,17 @@
 
 cd "$(dirname "$0")"
 
-BUCKET=$1
-KEY_ID=$2
-SECRET_KEY=$3
-DB_USER=$4
-DB_PASS=$5
+POSTGRES_PASSWORD=$1
+BUCKET=$2
+KEY_ID=$3
+SECRET_KEY=$4
+DB_USER=$5
+DB_PASS=$6
 
-cd src && docker build --build-arg BUCKET=$BUCKET --build-arg KEY_ID=$KEY_ID --build-arg SECRET_KEY=$SECRET_KEY --build-arg DB_USER=$DB_USER --build-arg DB_PASS=$DB_PASS -t photos-website .
+echo $POSTGRES_PASSWORD | docker secret create db_secret -
+
+cd src && docker build --build-arg POSTGRES_PASSWORD=$POSTGRES_PASSWORD --build-arg BUCKET=$BUCKET --build-arg KEY_ID=$KEY_ID --build-arg SECRET_KEY=$SECRET_KEY --build-arg DB_USER=$DB_USER --build-arg DB_PASS=$DB_PASS -t photos-website .
 
 docker volume create postgres_data
 
-docker-compose up -d
+docker stack deploy -c docker-compose.yml photos-website
