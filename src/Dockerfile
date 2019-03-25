@@ -3,6 +3,7 @@ FROM python:3.7-slim
 ARG BUCKET
 ARG KEY_ID
 ARG SECRET_KEY
+ARG POSTGRES_PASSWORD
 ARG DB_USER
 ARG DB_PASS
 
@@ -26,6 +27,7 @@ RUN echo env=KEY_ID=${KEY_ID} >> /srv/photos-website/photos-website.ini
 RUN echo env=SECRET_KEY=${SECRET_KEY} >> /srv/photos-website/photos-website.ini
 RUN echo env=DB_USER=${DB_USER} >> /srv/photos-website/photos-website.ini
 RUN echo env=DB_PASS=${DB_PASS} >> /srv/photos-website/photos-website.ini
+RUN echo env=POSTGRES_PASSWORD=${POSTGRES_PASSWORD} >> /srv/photos-website/photos-website.ini
 
 COPY nginx.conf /etc/nginx
 RUN chmod +x ./start.sh
