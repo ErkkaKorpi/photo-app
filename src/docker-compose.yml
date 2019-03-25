@@ -1,16 +1,18 @@
-version: "3"
+version: "3.3"
 services:
 
   postgres:
     image: postgres:latest
     environment:
-      - POSTGRES_PASSWORD=pass
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db_secret
       - POSTGRES_USER=usr
       - POSTGRES_DB=photos_website
     ports: 
       - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    secrets:
+      - db_secret
     
   photos-website:
     image: photos-website:latest
@@ -21,3 +23,6 @@ services:
 
 volumes:
   postgres_data:
+secrets:
+  db_secret:
+    external: true
