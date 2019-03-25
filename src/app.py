@@ -14,16 +14,17 @@ app = Flask(__name__)
 CORS(app)
 app.secret_key = os.urandom(12)
 
-engine = create_engine('postgresql://usr:pass@postgres:5432/photos_website')
-Session = sessionmaker(bind=engine)
-Base = declarative_base()
-
+postgress_pass = os.environ['POSTGRES_PASSWORD']
 key_id = os.environ["KEY_ID"]
 secret_key = os.environ["SECRET_KEY"]
 bucket = os.environ["BUCKET"]
 
 db_user = os.environ["DB_USER"]
 db_pass = os.environ["DB_PASS"]
+
+engine = create_engine(f'postgresql://usr:{postgress_pass}@postgres:5432/photos_website')
+Session = sessionmaker(bind=engine)
+Base = declarative_base()
 
 
 class User(Base):
