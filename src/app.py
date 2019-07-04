@@ -26,6 +26,13 @@ engine = create_engine(f'postgresql://usr:{postgress_pass}@postgres:5432/photos_
 Session = sessionmaker(bind=engine)
 Base = declarative_base()
 
+client = boto3.client(
+        's3',
+        aws_access_key_id=key_id,
+        aws_secret_access_key=secret_key,
+        region_name='eu-west-1'
+        )
+
 
 class User(Base):
     __tablename__ = 'users'
@@ -66,15 +73,7 @@ def check_db_table():
 
 
 def generate_urls(bucket, keys, token):
-    client = boto3.client(
-        's3',
-        aws_access_key_id=key_id,
-        aws_secret_access_key=secret_key,
-        region_name='eu-west-1'
-        )
-
     urls = []
-
     for key in keys:
         url = client.generate_presigned_url(
             'get_object',
@@ -85,24 +84,15 @@ def generate_urls(bucket, keys, token):
             ExpiresIn=60
         )
         urls.append(url)
-
     resp = {
         "urls": urls,
         "token": token
     }
-
     return resp
 
 
 def get_keys(token):
     keys = []
-    client = boto3.client(
-        's3',
-        aws_access_key_id=key_id,
-        aws_secret_access_key=secret_key,
-        region_name='eu-west-1'
-    )
-
     if token:
         objects = client.list_objects_v2(
             Bucket=bucket,
@@ -114,10 +104,8 @@ def get_keys(token):
             Bucket=bucket,
             MaxKeys=10,
         )
-
     for key in objects['Contents']:
         keys.append(key['Key'])
-
     if 'NextContinuationToken' in objects:
         return generate_urls(bucket, keys, objects['NextContinuationToken'])
     else:
@@ -161,7 +149,6 @@ def get_photos():
         token = token["token"]
     else:
         token = ""
-    
     return json.dumps(get_keys(token))
 
 

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-cd "$(dirname "$0")"
-
 POSTGRES_PASSWORD=$1
 BUCKET=$2
 KEY_ID=$3
